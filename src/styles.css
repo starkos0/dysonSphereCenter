@@ -6,7 +6,7 @@
 
 
 :root {
-  --body-bg: var(--p-surface-50);
+  --body-bg: var(--p-surface-0);
   --body-text-color: var(--p-surface-900);
   --card-border: 1px solid var(--border-color);
   --card-bg: var(--p-surface-50);
