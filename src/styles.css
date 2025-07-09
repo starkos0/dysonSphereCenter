@@ -28,6 +28,11 @@
   background: var(--card-bg);
   border: var(--card-border);
 }
+
+defaultBorder {
+  border: var(--card-border);
+}
+
 body {
   font-family: 'Poppins', sans-serif;
 }
