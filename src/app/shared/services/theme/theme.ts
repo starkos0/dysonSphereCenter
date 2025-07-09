@@ -4,7 +4,7 @@ import { effect, inject, Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class Theme {
-  public selectedTheme = signal<string>('string');
+  public selectedTheme = signal<'light' | 'dark'>('dark');
 
   constructor() {
     this.initPreferredTheme();
@@ -23,7 +23,7 @@ export class Theme {
 
   initPreferredTheme() {
     const storedTheme = localStorage.getItem('theme');
-    if (storedTheme) {
+    if (storedTheme === 'light' || storedTheme === 'dark') {
       this.selectedTheme.set(storedTheme);
     } else {
       const prefersDark = window.matchMedia(
