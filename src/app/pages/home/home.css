@@ -1,0 +1,5 @@
+::ng-deep .custom-drawer .p-drawer {
+    position: relative !important;
+    height: 100% !important;
+    top: 0 !important;
+}

@@ -6,6 +6,7 @@ import { Injectable, signal } from '@angular/core';
 export class SideBarControl {
   public collapsedSideBar = signal<boolean | null>(true);
   public hideSideBar = signal<boolean>(false);
+  public visibleDrawer = signal(false);
 
   constructor() {
     this.checkIfMobile();

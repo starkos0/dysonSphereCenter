@@ -13,6 +13,7 @@
   --border-color: var(--p-surface-200);
   --text-color: var(--p-surface-700);
   --overlay-background: #ffffff;
+  --testD: var(--p-drawer-mask)
 }
 
 :root[class='dark'] {
@@ -23,6 +24,7 @@
   --border-color: rgba(255, 255, 255, 0.1);
   --text-color: var(--p-surface-0);
   --overlay-background: var(--p-surface-900);
+  --testD: var(--p-drawer-mask)
 }
 .card {
   background: var(--card-bg);

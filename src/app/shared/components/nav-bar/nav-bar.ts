@@ -4,6 +4,7 @@ import { Theme } from '../../services/theme/theme';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { SideBarControl } from '../../services/sideBarControl/side-bar-control';
 @Component({
   selector: 'app-nav-bar',
   imports: [CommonModule, ButtonModule, RatingModule, FormsModule],
@@ -11,6 +12,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './nav-bar.css'
 })
 export class NavBar {
-  public themeService = inject(Theme);
+  public sideBarControl = inject(SideBarControl);
   value: number = 0
 }
