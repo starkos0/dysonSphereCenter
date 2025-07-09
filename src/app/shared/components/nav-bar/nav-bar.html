@@ -1,0 +1,10 @@
+<div class="">
+    <button type="button" class="card rounded-sm w-full" (click)="themeService.toggleDarkMode()">
+        <i [ngClass]="{ 'pi ': true, 'pi-moon':  themeService.isDarkMode(), 'pi-sun': !themeService.isDarkMode() }"></i>
+    </button>
+</div>
+
+
+<div class="card flex justify-center">
+<p>Test poppins FONT</p>
+</div>     
