@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-node-graph',
   imports: [],
   templateUrl: './node-graph.html',
-  styleUrl: './node-graph.css'
+  styleUrl: './node-graph.css',
 })
-export class NodeGraph {
-
-}
+export class NodeGraph {}

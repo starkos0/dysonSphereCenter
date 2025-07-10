@@ -10,11 +10,11 @@ import { RouterLink } from '@angular/router';
   selector: 'app-nav-bar',
   imports: [CommonModule, ButtonModule, RatingModule, FormsModule, RouterLink],
   templateUrl: './nav-bar.html',
-  styleUrl: './nav-bar.css'
+  styleUrl: './nav-bar.css',
 })
 export class NavBar {
   public sideBarControl = inject(SideBarControl);
-    public themeService = inject(Theme);
+  public themeService = inject(Theme);
 
-  value: number = 0
+  value: number = 0;
 }

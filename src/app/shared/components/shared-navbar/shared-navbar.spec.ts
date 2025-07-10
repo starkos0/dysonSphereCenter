@@ -8,9 +8,8 @@ describe('SharedNavbar', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedNavbar]
-    })
-    .compileComponents();
+      imports: [SharedNavbar],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SharedNavbar);
     component = fixture.componentInstance;

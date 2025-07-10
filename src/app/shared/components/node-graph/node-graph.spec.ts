@@ -8,9 +8,8 @@ describe('NodeGraph', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NodeGraph]
-    })
-    .compileComponents();
+      imports: [NodeGraph],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NodeGraph);
     component = fixture.componentInstance;

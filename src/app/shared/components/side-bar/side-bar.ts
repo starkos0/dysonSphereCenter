@@ -13,12 +13,19 @@ import { Theme } from '../../services/theme/theme';
 
 @Component({
   selector: 'app-side-bar',
-  imports: [DrawerModule, MenuModule, ButtonModule, ConfirmDialog, TieredMenuModule, PanelMenuModule, CommonModule],
+  imports: [
+    DrawerModule,
+    MenuModule,
+    ButtonModule,
+    ConfirmDialog,
+    TieredMenuModule,
+    PanelMenuModule,
+    CommonModule,
+  ],
   templateUrl: './side-bar.html',
-  styleUrl: './side-bar.css'
+  styleUrl: './side-bar.css',
 })
 export class SideBar {
-
   public sideBarControl = inject(SideBarControl);
   public themeService = inject(Theme);
 }

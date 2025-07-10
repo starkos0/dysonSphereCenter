@@ -1,60 +1,61 @@
-@if(!sideBarControl.hideSideBar()) {
-    <div
-  class="card p-2 rounded-sm h-full transition-all duration-300"
-  [ngClass]="{
-    'w-14': sideBarControl.collapsedSideBar(),
-    'w-60': !sideBarControl.collapsedSideBar(),
-  }"
->
-  @if (sideBarControl.collapsedSideBar()) {
-    <div class="flex flex-col gap-2 items-center">
+@if (!sideBarControl.hideSideBar()) {
+  <div
+    class="card p-2 rounded-sm h-full transition-all duration-300"
+    [ngClass]="{
+      'w-14': sideBarControl.collapsedSideBar(),
+      'w-60': !sideBarControl.collapsedSideBar(),
+    }"
+  >
+    @if (sideBarControl.collapsedSideBar()) {
+      <div class="flex flex-col gap-2 items-center">
+        <p-button
+          (click)="
+            sideBarControl.collapsedSideBar.set(
+              !sideBarControl.collapsedSideBar()
+            )
+          "
+          icon="pi pi-cog"
+          severity="secondary"
+          styleClass="shadow-sm"
+        ></p-button>
+        <p-button
+          icon="pi pi-chart-bar"
+          severity="secondary"
+          styleClass="shadow-sm"
+        ></p-button>
+        <p-button
+          icon="pi pi-share-alt"
+          severity="secondary"
+          styleClass="shadow-sm"
+        ></p-button>
+      </div>
+    } @else {
       <p-button
+        fluid="true"
+        severity="secondary"
         (click)="
           sideBarControl.collapsedSideBar.set(
             !sideBarControl.collapsedSideBar()
           )
         "
-        icon="pi pi-cog"
-        severity="secondary"
         styleClass="shadow-sm"
-      ></p-button>
-      <p-button
-        icon="pi pi-chart-bar"
-        severity="secondary"
-        styleClass="shadow-sm"
-      ></p-button>
-      <p-button
-        icon="pi pi-share-alt"
-        severity="secondary"
-        styleClass="shadow-sm"
-      ></p-button>
-      
-    </div>
-  } @else {
-    <p-button
-      fluid="true"
-      severity="secondary"
-      (click)="
-        sideBarControl.collapsedSideBar.set(!sideBarControl.collapsedSideBar())
-      "
-      styleClass="shadow-sm"
-    >
-      <div class="flex justify-between items-center w-full">
-        <span class="font-bold">Configurator</span>
-        <i class="pi pi-angle-double-left"></i>
-      </div>
-    </p-button>
-  }
-</div>
+      >
+        <div class="flex justify-between items-center w-full">
+          <span class="font-bold">Configurator</span>
+          <i class="pi pi-angle-double-left"></i>
+        </div>
+      </p-button>
+    }
+  </div>
 }
 
-@if(sideBarControl.hideSideBar()) {
-  
-<p-drawer [(visible)]="sideBarControl.visibleDrawer" header="Drawer">
+@if (sideBarControl.hideSideBar()) {
+  <p-drawer [(visible)]="sideBarControl.visibleDrawer" header="Drawer">
     <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
     </p>
-</p-drawer>
+  </p-drawer>
 }

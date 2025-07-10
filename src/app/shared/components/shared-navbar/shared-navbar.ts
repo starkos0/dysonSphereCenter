@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-shared-navbar',
   imports: [],
   templateUrl: './shared-navbar.html',
-  styleUrl: './shared-navbar.css'
+  styleUrl: './shared-navbar.css',
 })
-export class SharedNavbar {
-
-}
+export class SharedNavbar {}

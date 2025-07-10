@@ -17,8 +17,7 @@ export class Theme {
         element.classList.toggle('light', selectedTheme === 'light');
       }
       localStorage.setItem('theme', this.selectedTheme());
-
-    })
+    });
   }
 
   initPreferredTheme() {
@@ -29,8 +28,8 @@ export class Theme {
       const prefersDark = window.matchMedia(
         '(prefers-color-scheme: dark)',
       ).matches;
-      
-      this.selectedTheme.update((_ ) =>  prefersDark ? 'dark' : 'light');
+
+      this.selectedTheme.update((_) => (prefersDark ? 'dark' : 'light'));
     }
   }
 
