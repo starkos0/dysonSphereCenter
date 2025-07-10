@@ -2,9 +2,7 @@
   @if (sideBarControl.hideSideBar()) {
     <p-button
       (onClick)="
-        sideBarControl.visibleDrawer.set(
-          !sideBarControl.visibleDrawer()
-        )
+        sideBarControl.visibleDrawer.set(!sideBarControl.visibleDrawer())
       "
       severity="secondary"
       icon="pi pi-bars"
@@ -12,22 +10,39 @@
       styleClass="shadow-sm"
     ></p-button>
   } @else {
-    <div></div>
+    <div><h1 class="font-bold text-lg">DSP Center</h1></div>
   }
   <div class="flex items-center gap-2">
     <p-button
-      severity="secondary"
-      size="small"
-      icon="pi pi-wave-pulse"
       styleClass="shadow-sm"
-      label="Quick Ratios"
-    ></p-button>
-    <p-button
+      severity="secondary"
+      (click)="themeService.toggleDarkMode()"
+      [icon]="'pi ' + (themeService.isDarkMode() ? 'pi-moon' : 'pi-sun')"
+    >
+    </p-button>
+    <a
+    pButton 
+      class="shadow-sm"
       severity="secondary"
       icon="pi pi-home"
-      size="small"
-      styleClass="shadow-sm"
-      label="Home"
-    ></p-button>
+      routerLink="/home"
+    >
+    </a>
+    <a
+      pButton
+      severity="secondary"
+      icon="pi pi-wave-pulse"
+      class="shadow-sm"
+      label="Quick Ratios"
+      routerLink="/quickRatios"
+    ></a>
+    <a
+      pButton
+      severity="secondary"
+      icon="pi pi-calculator"
+      class="shadow-sm"
+      label="Calculator"
+      routerLink="/calculator"
+    ></a>
   </div>
 </div>

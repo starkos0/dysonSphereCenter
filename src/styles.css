@@ -37,4 +37,5 @@ defaultBorder {
 
 body {
   font-family: 'Poppins', sans-serif;
+  color: var(--text-color);
 }

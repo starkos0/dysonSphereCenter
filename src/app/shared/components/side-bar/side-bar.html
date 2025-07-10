@@ -28,13 +28,7 @@
         severity="secondary"
         styleClass="shadow-sm"
       ></p-button>
-      <p-button
-        styleClass="shadow-sm"
-        severity="secondary"
-        (click)="themeService.toggleDarkMode()"
-        [icon]="'pi ' + (themeService.isDarkMode() ? 'pi-moon' : 'pi-sun')"
-      >
-      </p-button>
+      
     </div>
   } @else {
     <p-button

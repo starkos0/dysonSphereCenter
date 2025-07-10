@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
 
 export const routes: Routes = [
     {
@@ -8,14 +7,15 @@ export const routes: Routes = [
         redirectTo: 'home'
     },
     {
-        path: '',
-        component: Home,
-        children: [
-            {
-                path: 'home',
-                loadComponent: () => import('./pages/home/home').then(m => m.Home)
-
-            }
-        ]
+        path: 'home',
+        loadComponent: () => import('./pages/home/home').then(m => m.Home)
+    },
+    {
+        path: 'calculator',
+        loadComponent: () => import('./pages/calculator/calculator').then(m => m.Calculator)
+    },
+    {
+        path: 'quickRatios',
+        loadComponent: () => import('./pages/quick-ratios/quick-ratios').then(m => m.QuickRatios)
     }
 ];
