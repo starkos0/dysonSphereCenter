@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataTable } from './data-table';
+import { SharedNavbar } from './shared-navbar';
 
-describe('DataTable', () => {
-  let component: DataTable;
-  let fixture: ComponentFixture<DataTable>;
+describe('SharedNavbar', () => {
+  let component: SharedNavbar;
+  let fixture: ComponentFixture<SharedNavbar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DataTable]
-    })
-    .compileComponents();
+      imports: [SharedNavbar],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(DataTable);
+    fixture = TestBed.createComponent(SharedNavbar);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

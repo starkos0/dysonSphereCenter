@@ -1,6 +1,48 @@
-<div class="h-12 p-2 card rounded-sm">
-    <button type="button" (click)="themeService.toggleDarkMode()">
-        <i [ngClass]="{ 'pi ': true, 'pi-moon':  themeService.isDarkMode(), 'pi-sun': !themeService.isDarkMode() }"></i>
-    </button>
+<div class="p-2 card rounded-sm flex items-center justify-between">
+  @if (sideBarControl.hideSideBar()) {
+    <p-button
+      (onClick)="
+        sideBarControl.visibleDrawer.set(!sideBarControl.visibleDrawer())
+      "
+      severity="secondary"
+      icon="pi pi-bars"
+      size="small"
+      styleClass="shadow-sm"
+    ></p-button>
+  } @else {
+    <div><h1 class="font-bold text-lg">DSP Center</h1></div>
+  }
+  <div class="flex items-center gap-2">
+    <p-button
+      styleClass="shadow-sm"
+      severity="secondary"
+      (click)="themeService.toggleDarkMode()"
+      [icon]="'pi ' + (themeService.isDarkMode() ? 'pi-moon' : 'pi-sun')"
+    >
+    </p-button>
+    <a
+      pButton
+      class="shadow-sm"
+      severity="secondary"
+      icon="pi pi-home"
+      routerLink="/home"
+    >
+    </a>
+    <a
+      pButton
+      severity="secondary"
+      icon="pi pi-wave-pulse"
+      class="shadow-sm"
+      label="Quick Ratios"
+      routerLink="/quickRatios"
+    ></a>
+    <a
+      pButton
+      severity="secondary"
+      icon="pi pi-calculator"
+      class="shadow-sm"
+      label="Calculator"
+      routerLink="/calculator"
+    ></a>
+  </div>
 </div>
-

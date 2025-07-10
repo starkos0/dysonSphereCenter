@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-total-buildings',
   imports: [],
   templateUrl: './total-buildings.html',
-  styleUrl: './total-buildings.css'
+  styleUrl: './total-buildings.css',
 })
-export class TotalBuildings {
-
-}
+export class TotalBuildings {}

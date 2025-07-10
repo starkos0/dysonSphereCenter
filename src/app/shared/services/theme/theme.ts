@@ -4,7 +4,7 @@ import { effect, inject, Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class Theme {
-  public selectedTheme = signal<string>('string');
+  public selectedTheme = signal<'light' | 'dark'>('dark');
 
   constructor() {
     this.initPreferredTheme();
@@ -17,20 +17,19 @@ export class Theme {
         element.classList.toggle('light', selectedTheme === 'light');
       }
       localStorage.setItem('theme', this.selectedTheme());
-
-    })
+    });
   }
 
   initPreferredTheme() {
     const storedTheme = localStorage.getItem('theme');
-    if (storedTheme) {
+    if (storedTheme === 'light' || storedTheme === 'dark') {
       this.selectedTheme.set(storedTheme);
     } else {
       const prefersDark = window.matchMedia(
         '(prefers-color-scheme: dark)',
       ).matches;
-      
-      this.selectedTheme.update((_ ) =>  prefersDark ? 'dark' : 'light');
+
+      this.selectedTheme.update((_) => (prefersDark ? 'dark' : 'light'));
     }
   }
 

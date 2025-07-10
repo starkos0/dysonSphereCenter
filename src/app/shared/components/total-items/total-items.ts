@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-total-items',
   imports: [],
   templateUrl: './total-items.html',
-  styleUrl: './total-items.css'
+  styleUrl: './total-items.css',
 })
-export class TotalItems {
-
-}
+export class TotalItems {}

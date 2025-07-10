@@ -7,7 +7,7 @@ import { Theme } from './shared/services/theme/theme';
   selector: 'app-root',
   imports: [RouterOutlet, ButtonModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected title = 'dysonSphereCenter';

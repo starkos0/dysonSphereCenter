@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
         preset: customPreset,
         options: {
           darkModeSelector: '.dark',
-          order: 'tailwind-base, primeng, tailwind-utilities'
+          order: 'tailwind-base, primeng, tailwind-utilities',
         },
       },
     }),

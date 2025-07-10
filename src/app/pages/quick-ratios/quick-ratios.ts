@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-quick-ratios',
   imports: [],
   templateUrl: './quick-ratios.html',
-  styleUrl: './quick-ratios.css'
+  styleUrl: './quick-ratios.css',
 })
-export class QuickRatios {
-
-}
+export class QuickRatios {}
