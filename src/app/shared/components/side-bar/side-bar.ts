@@ -7,9 +7,13 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { SideBarControl } from '../../services/sideBarControl/side-bar-control';
 import { Theme } from '../../services/theme/theme';
+import { RecipeTreeGenerator } from '../../services/recipeTreeGenerator/recipe-tree-generator';
+import { ItemSelector } from '../../../pages/calculator/components/item-selector/item-selector';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FloatLabel } from 'primeng/floatlabel';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-side-bar',
@@ -21,6 +25,10 @@ import { Theme } from '../../services/theme/theme';
     TieredMenuModule,
     PanelMenuModule,
     CommonModule,
+    ItemSelector,
+    InputNumberModule,
+    FloatLabel,
+    FormsModule
   ],
   templateUrl: './side-bar.html',
   styleUrl: './side-bar.css',
@@ -28,4 +36,14 @@ import { Theme } from '../../services/theme/theme';
 export class SideBar {
   public sideBarControl = inject(SideBarControl);
   public themeService = inject(Theme);
+  public recipeTreeGenerator = inject(RecipeTreeGenerator);
+  public open = signal(false);
+  constructor() {
+    effect(() => {
+      if (!this.open()) {
+      }
+    });
+  }
+
+  
 }

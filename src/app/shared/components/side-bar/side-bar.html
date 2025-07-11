@@ -1,3 +1,5 @@
+<app-item-selector [(open)]="open"></app-item-selector>
+
 @if (!sideBarControl.hideSideBar()) {
   <div
     class="card p-2 rounded-sm h-full transition-all duration-300"
@@ -45,6 +47,67 @@
           <i class="pi pi-angle-double-left"></i>
         </div>
       </p-button>
+
+      <div class="flex-auto">
+        <label class="my-2 block text-xs font-bold" for="stacked">
+          Select item
+        </label>
+        <p-button
+          severity="secondary"
+          styleClass="shadow-sm"
+          fluid="true"
+          (onClick)="open.set(true)"
+        >
+          <div class="w-full flex justify-between items-center">
+            @if (!recipeTreeGenerator.selectedItem()) {
+              <span class="font-bold text-sm">Nothing selected</span>
+            } @else {
+              <span class="font-bold text-sm">
+                {{ recipeTreeGenerator.selectedItem()?.name }}
+              </span>
+            }
+            <img
+              [src]="
+                !recipeTreeGenerator.selectedItem()
+                  ? 'Icons/ItemRecipe/various/select-recipe.png'
+                  : recipeTreeGenerator.selectedItem()?.IconPath + '.png'
+              "
+              alt=""
+              class="w-6 h-6"
+            />
+          </div>
+        </p-button>
+      </div>
+      <div class="flex-auto">
+        <label class="my-2 block text-xs font-bold" for="stacked">
+          Quantity
+        </label>
+        <p-inputnumber
+          [ngModel]="recipeTreeGenerator.selectedQuantity()"
+          (ngModelChange)="recipeTreeGenerator.selectedQuantity.set($event)"
+          [showButtons]="true"
+          inputId="stacked"
+          [size]="'small'"
+          fluid="true"
+        />
+      </div>
+      <p-button
+        severity="secondary"
+        styleClass="shadow-sm my-2"
+        fluid="true"
+        icon="pi pi-check"
+        label="Save configuration"
+        [size]="'small'"
+      ></p-button>
+      <p-button
+        severity="primary"
+        styleClass="shadow-sm my-2"
+        fluid="true"
+        icon="pi pi-play"
+        label="Save and generate"
+        [size]="'small'"
+        (onClick)="recipeTreeGenerator.checkRecipeAndQuantitySelection()"
+      ></p-button>
     }
   </div>
 }

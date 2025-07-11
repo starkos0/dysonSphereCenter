@@ -1,0 +1,54 @@
+<p-dialog
+  header="Item selector"
+  [(visible)]="open"
+  [modal]="true"
+  [dismissableMask]="true"
+  [closeOnEscape]="true"
+  (onHide)="open.set(false)"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+>
+  <p-tabs value="0" scrollable>
+        <p-tablist>
+            <ng-template #previcon>
+                <i class="pi pi-minus"></i>
+            </ng-template>
+            <p-tab value="0" class="flex items-center !gap-2">
+                <span class="font-bold whitespace-nowrap">Items</span>
+            </p-tab>
+            <p-tab value="1" class="flex items-center !gap-2">
+                <span class="font-bold whitespace-nowrap">Buildings</span>
+            </p-tab>
+            <p-tab value="2" class="flex items-center !gap-2">
+                <span class="font-bold whitespace-nowrap">Technologies</span>
+            </p-tab>
+            <ng-template #nexticon>
+                <i class="pi pi-plus"></i>
+            </ng-template>
+        </p-tablist>
+        <p-tabpanels>
+            <p-tabpanel value="0">
+                <div class="flex flex-wrap gap-2 items-center justify-center">
+                    @if(mapDataService.items()) {
+                        @for (item of mapDataService.items() | keyvalue; track item.key) {
+                            <p-button (onClick)="saveSelectedItem(item.value)" [pTooltip]="item.value.name" tooltipPosition="top" styleClass="shadow-md" severity="secondary">
+                                <img [src]="item.value.IconPath + '.png'" class="w-8 h-8" alt="">
+                            </p-button>
+                        }
+                    }
+                </div>
+            </p-tabpanel>
+            <p-tabpanel value="1">
+                <div class="flex flex-wrap gap-2 items-center justify-center">
+                    @if(mapDataService.buildings()) {
+                        @for (item of mapDataService.buildings() | keyvalue; track item.key) {
+                            <p-button (onClick)="saveSelectedItem(item.value)" [pTooltip]="item.value.name" tooltipPosition="top" styleClass="shadow-md" severity="secondary">
+                                <img [src]="item.value.IconPath + '.png'" class="w-8 h-8" alt="">
+                            </p-button>
+                        }
+                    }
+                </div>
+            </p-tabpanel>
+        </p-tabpanels>
+    </p-tabs>
+</p-dialog>
