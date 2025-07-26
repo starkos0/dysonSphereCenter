@@ -1,4 +1,5 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
+import { MapData } from '../mapData/map-data';
 
 @Injectable({
   providedIn: 'root',
@@ -40,4 +41,6 @@ export class Theme {
   isDarkMode(): boolean {
     return this.selectedTheme() === 'dark';
   }
+
+  
 }

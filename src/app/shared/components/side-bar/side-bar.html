@@ -1,3 +1,5 @@
+<app-item-selector [(open)]="open"></app-item-selector>
+
 @if (!sideBarControl.hideSideBar()) {
   <div
     class="card p-2 rounded-sm h-full transition-all duration-300"
@@ -30,32 +32,759 @@
         ></p-button>
       </div>
     } @else {
-      <p-button
-        fluid="true"
-        severity="secondary"
-        (click)="
-          sideBarControl.collapsedSideBar.set(
-            !sideBarControl.collapsedSideBar()
-          )
-        "
-        styleClass="shadow-sm"
-      >
-        <div class="flex justify-between items-center w-full">
-          <span class="font-bold">Configurator</span>
-          <i class="pi pi-angle-double-left"></i>
+      <div class="h-full flex flex-col">
+        <p-button
+          fluid="true"
+          severity="secondary"
+          (click)="
+            sideBarControl.collapsedSideBar.set(
+              !sideBarControl.collapsedSideBar()
+            )
+          "
+          styleClass="shadow-sm mb-2"
+        >
+          <div class="flex justify-between items-center w-full">
+            <span class="font-bold">Configurator</span>
+            <i class="pi pi-angle-double-left"></i>
+          </div>
+        </p-button>
+
+        <div class="flex flex-col justify-between grow overflow-y-auto">
+          <div class="flex flex-col gap-2">
+            <div class="flex-auto">
+              <label class="mb-2 block text-xs font-bold" for="stacked">
+                Select item
+              </label>
+              <p-button
+                severity="secondary"
+                styleClass="shadow-sm"
+                fluid="true"
+                (onClick)="open.set(true)"
+              >
+                <div class="w-full flex justify-between items-center">
+                  @if (!recipeTreeGenerator.selectedItem()) {
+                    <span class="font-bold text-sm">Nothing selected</span>
+                  } @else {
+                    <span class="font-bold text-sm">
+                      {{ recipeTreeGenerator.selectedItem()?.name }}
+                    </span>
+                  }
+                  <img
+                    [src]="
+                      !recipeTreeGenerator.selectedItem()
+                        ? 'Icons/ItemRecipe/various/select-recipe.png'
+                        : recipeTreeGenerator.selectedItem()?.IconPath + '.png'
+                    "
+                    alt=""
+                    class="w-6 h-6"
+                  />
+                </div>
+              </p-button>
+            </div>
+            <div class="flex-auto">
+              <label class="mb-2 block text-xs font-bold" for="stacked">
+                Quantity
+              </label>
+              <p-inputnumber
+                [ngModel]="recipeTreeGenerator.selectedQuantity()"
+                (ngModelChange)="
+                  recipeTreeGenerator.selectedQuantity.set($event)
+                "
+                [showButtons]="true"
+                inputId="stacked"
+                [size]="'small'"
+                fluid="true"
+              />
+            </div>
+            <p-divider />
+
+            <div class="flex-auto mt-2">
+              <h2 class="font-bold mb-2">Default buildings</h2>
+              <p-select
+                [options]="configService.assemblers()"
+                [ngModel]="configService.userConfig().buildings.assembler!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'buildings',
+                    'assembler',
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                styleClass="w-full"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.assembler!
+                          .IconPath + '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.smelters()"
+                [ngModel]="configService.userConfig().buildings.smelter!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig('buildings', 'smelter', $event)
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                styleClass="w-full"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.smelter!.IconPath +
+                        '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.chemicalPlants()"
+                [ngModel]="
+                  configService.userConfig().buildings.chemicalPlant!.ID
+                "
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'buildings',
+                    'chemicalPlant',
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                styleClass="w-full"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.chemicalPlant!
+                          .IconPath + '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.matrixLabs()"
+                [ngModel]="configService.userConfig().buildings.matrixLab!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'buildings',
+                    'matrixLab',
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                fluid="true"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.matrixLab!
+                          .IconPath + '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.miningMachines()"
+                [ngModel]="
+                  configService.userConfig().buildings.miningMachine!.ID
+                "
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'buildings',
+                    'miningMachine',
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                fluid="true"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.miningMachine!
+                          .IconPath + '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.proliferators()"
+                [ngModel]="configService.userConfig().proliferator!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'proliferator',
+                    undefined,
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                fluid="true"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().proliferator!.IconPath +
+                        '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.belts()"
+                [ngModel]="configService.userConfig().belt!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig('belt', undefined, $event)
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a belt"
+                size="small"
+                styleClass="w-full"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="configService.userConfig().belt!.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <p-divider />
+
+            <div class="flex-auto mt-2">
+              <h2 class="font-bold">Extra config</h2>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <p-button
+              severity="secondary"
+              styleClass="shadow-sm "
+              fluid="true"
+              icon="pi pi-check"
+              label="Save configuration"
+              (onClick)="configService.saveConfig()"
+              [size]="'small'"
+            ></p-button>
+            <p-button
+              severity="primary"
+              styleClass="shadow-sm "
+              fluid="true"
+              icon="pi pi-play"
+              label="Save and generate"
+              [size]="'small'"
+              (onClick)="recipeTreeGenerator.checkRecipeAndQuantitySelection()"
+            ></p-button>
+          </div>
         </div>
-      </p-button>
+      </div>
     }
   </div>
 }
 
 @if (sideBarControl.hideSideBar()) {
   <p-drawer [(visible)]="sideBarControl.visibleDrawer" header="Drawer">
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </p>
+    <div class="h-full flex flex-col">
+        <div class="flex flex-col justify-between grow overflow-y-auto">
+          <div class="flex flex-col gap-2">
+            <div class="flex-auto">
+              <label class="mb-2 block text-xs font-bold" for="stacked">
+                Select item
+              </label>
+              <p-button
+                severity="secondary"
+                styleClass="shadow-sm"
+                fluid="true"
+                (onClick)="open.set(true)"
+              >
+                <div class="w-full flex justify-between items-center">
+                  @if (!recipeTreeGenerator.selectedItem()) {
+                    <span class="font-bold text-sm">Nothing selected</span>
+                  } @else {
+                    <span class="font-bold text-sm">
+                      {{ recipeTreeGenerator.selectedItem()?.name }}
+                    </span>
+                  }
+                  <img
+                    [src]="
+                      !recipeTreeGenerator.selectedItem()
+                        ? 'Icons/ItemRecipe/various/select-recipe.png'
+                        : recipeTreeGenerator.selectedItem()?.IconPath + '.png'
+                    "
+                    alt=""
+                    class="w-6 h-6"
+                  />
+                </div>
+              </p-button>
+            </div>
+            <div class="flex-auto">
+              <label class="mb-2 block text-xs font-bold" for="stacked">
+                Quantity
+              </label>
+              <p-inputnumber
+                [ngModel]="recipeTreeGenerator.selectedQuantity()"
+                (ngModelChange)="
+                  recipeTreeGenerator.selectedQuantity.set($event)
+                "
+                [showButtons]="true"
+                inputId="stacked"
+                [size]="'small'"
+                fluid="true"
+              />
+            </div>
+            <p-divider />
+
+            <div class="flex-auto mt-2">
+              <h2 class="font-bold mb-2">Default buildings</h2>
+              <p-select
+                [options]="configService.assemblers()"
+                [ngModel]="configService.userConfig().buildings.assembler!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'buildings',
+                    'assembler',
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                styleClass="w-full"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.assembler!
+                          .IconPath + '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.smelters()"
+                [ngModel]="configService.userConfig().buildings.smelter!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig('buildings', 'smelter', $event)
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                styleClass="w-full"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.smelter!.IconPath +
+                        '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.chemicalPlants()"
+                [ngModel]="
+                  configService.userConfig().buildings.chemicalPlant!.ID
+                "
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'buildings',
+                    'chemicalPlant',
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                styleClass="w-full"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.chemicalPlant!
+                          .IconPath + '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.matrixLabs()"
+                [ngModel]="configService.userConfig().buildings.matrixLab!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'buildings',
+                    'matrixLab',
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                fluid="true"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.matrixLab!
+                          .IconPath + '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.miningMachines()"
+                [ngModel]="
+                  configService.userConfig().buildings.miningMachine!.ID
+                "
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'buildings',
+                    'miningMachine',
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                fluid="true"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().buildings.miningMachine!
+                          .IconPath + '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.proliferators()"
+                [ngModel]="configService.userConfig().proliferator!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig(
+                    'proliferator',
+                    undefined,
+                    $event
+                  )
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a building"
+                size="small"
+                fluid="true"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="
+                        configService.userConfig().proliferator!.IconPath +
+                        '.png'
+                      "
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="flex-auto mt-2">
+              <p-select
+                [options]="configService.belts()"
+                [ngModel]="configService.userConfig().belt!.ID"
+                (ngModelChange)="
+                  configService.updateUserConfig('belt', undefined, $event)
+                "
+                optionLabel="name"
+                optionValue="ID"
+                placeholder="Select a belt"
+                size="small"
+                styleClass="w-full"
+                appendTo="body"
+              >
+                <ng-template #selectedItem let-selectedOption>
+                  <div class="flex items-center gap-2" *ngIf="selectedOption">
+                    <img
+                      [src]="configService.userConfig().belt!.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ selectedOption.name }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-country #item>
+                  <div class="flex items-center gap-2">
+                    <img
+                      [src]="country.IconPath + '.png'"
+                      style="width: 24px"
+                    />
+                    <div>{{ country.name }}</div>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <p-divider />
+
+            <div class="flex-auto mt-2">
+              <h2 class="font-bold">Extra config</h2>
+            </div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <p-button
+              severity="secondary"
+              styleClass="shadow-sm "
+              fluid="true"
+              icon="pi pi-check"
+              label="Save configuration"
+              (onClick)="configService.saveConfig()"
+              [size]="'small'"
+            ></p-button>
+            <p-button
+              severity="primary"
+              styleClass="shadow-sm "
+              fluid="true"
+              icon="pi pi-play"
+              label="Save and generate"
+              [size]="'small'"
+              (onClick)="recipeTreeGenerator.checkRecipeAndQuantitySelection()"
+            ></p-button>
+          </div>
+        </div>
+      </div>
   </p-drawer>
 }
