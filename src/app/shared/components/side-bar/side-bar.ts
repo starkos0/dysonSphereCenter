@@ -14,7 +14,9 @@ import { ItemSelector } from '../../../pages/calculator/components/item-selector
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabel } from 'primeng/floatlabel';
 import { FormsModule } from '@angular/forms';
-
+import { DividerModule } from 'primeng/divider';
+import { Configuration } from '../../services/configuration/configuration';
+import { SelectModule } from 'primeng/select';
 @Component({
   selector: 'app-side-bar',
   imports: [
@@ -28,7 +30,9 @@ import { FormsModule } from '@angular/forms';
     ItemSelector,
     InputNumberModule,
     FloatLabel,
-    FormsModule
+    FormsModule,
+    DividerModule,
+    SelectModule
   ],
   templateUrl: './side-bar.html',
   styleUrl: './side-bar.css',
@@ -38,6 +42,8 @@ export class SideBar {
   public themeService = inject(Theme);
   public recipeTreeGenerator = inject(RecipeTreeGenerator);
   public open = signal(false);
+  public configService = inject(Configuration);
+
   constructor() {
     effect(() => {
       if (!this.open()) {

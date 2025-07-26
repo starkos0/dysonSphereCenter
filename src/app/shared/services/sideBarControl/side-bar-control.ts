@@ -14,7 +14,7 @@ export class SideBarControl {
   }
 
   private checkIfMobile() {
-    const mobile = window.innerWidth <= 768;
+    const mobile = window.innerWidth <= 1024;
 
     this.hideSideBar.set(mobile);
     this.collapsedSideBar.set(mobile ? null : true);

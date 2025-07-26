@@ -26,6 +26,8 @@ export class MapData {
   public techs = signal(new Map<number, Tech>());
   public mainDataLoaded = signal(false);
   public buildings = signal(new Map<number, Item>());
+  public itemsWithoutBuildings = signal(new Map<number,Item>());
+
   constructor() {
     effect(() => {
       if (
@@ -40,6 +42,22 @@ export class MapData {
       const itemsWithRecipes = this.itemsWithRecipes();
       console.log('Items with recipes:', itemsWithRecipes);
     });
+
+    effect(() => {
+      const buildings = this.buildings();
+      const items = this.items();
+
+      const filteredItems = new Map<number, Item>();
+
+
+      items.forEach((item, key) => {
+        if(!buildings.has(key)) {
+          filteredItems.set(key, item);
+        }
+      })
+
+      this.itemsWithoutBuildings.set(filteredItems)
+    })
   }
 
   public storeItems(items: Item[]) {
@@ -109,10 +127,25 @@ export class MapData {
     const map = new Map<number, ItemWithRecipes>();
 
     for(const item of items.values()) {
-      const itemRecipes = Array.from(recipes.values()).filter(recipe => 
+      const itemRecipes = (Array.from(recipes.values()).filter(recipe => 
         item.recipes?.some(r => r.ID === recipe.ID)
-      ) || [];
+      ) || []).map(recipe => {
+        const inputIcons = recipe.Items.map((itemId) => {
+          const inputItem = items.get(itemId);
+          return inputItem?.IconPath ?? '';
+        });
 
+        const outputIcons = recipe.Results.map((itemId) => {
+          const outputItem = items.get(itemId);
+          return outputItem?.IconPath ?? '';
+        })
+
+        return {
+          ...recipe,
+          inputIcons,
+          outputIcons
+        }
+      });
 
       const defaultRecipe = itemRecipes.length > 1 
         ? itemRecipes.find(r => r.name.toLowerCase().includes('advanced'))

@@ -22,9 +22,13 @@ export class RecipeTreeGenerator {
           `Selected item: ${selectedItem.name}, Quantity: ${this.selectedQuantity()}`,
         );
       }
+
+      const recipeTreeTreeNode = this.recipeTreeTreeNode();
+      console.warn("recipetree node: ", recipeTreeTreeNode)
     });
   }
 
+  // Mapped tree for primeNG treetable, we use computed signal
   public recipeTreeTreeNode = computed(() => {
     const dt = this.recipeTree();
     return dt ? [this.mapTreeToTreeNode(dt)] : [];
@@ -94,12 +98,14 @@ export class RecipeTreeGenerator {
   }
 
   mapTreeToTreeNode(root: DataTree): TreeNode<DataTree> {
-    const rootNode: TreeNode = {
+    const rootNode: TreeNode<DataTree> = {
       data: {
         itemName: root.itemName,
         quantity: root.quantity,
-        recipeName: root.recipe?.name ?? '—',
+        recipe: root.recipe,
         iconPath: root.iconPath,
+        key: root.key,
+        itemId: root.itemId
       },
       children: [],
       leaf: !root.children || root.children.length === 0,
@@ -111,12 +117,14 @@ export class RecipeTreeGenerator {
     while (stack.length > 0) {
       const [dt, tn] = stack.pop()!;
       for (const child of dt.children ?? []) {
-        const childTN: TreeNode = {
+        const childTN: TreeNode<DataTree> = {
           data: {
             itemName: child.itemName,
             quantity: child.quantity,
-            recipeName: child.recipe?.name ?? '—',
+            recipe: child.recipe,
             iconPath: child.iconPath,
+            key: child.key,
+            itemId: child.itemId
           },
           children: [],
           leaf: !child.children || child.children.length === 0,

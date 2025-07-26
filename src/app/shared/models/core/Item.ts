@@ -24,7 +24,7 @@ export interface Item {
   description: string
   index: number
   iconSprite: string
-  typeString: string
+  typeString: typeString
   fuelTypeString: string
   name: string
 }
@@ -107,6 +107,7 @@ export interface PrefabDesc {
   audioVolume: number
   audioPitch: number
   audioDoppler: number
+  isBelt?: boolean
 }
 
 export interface Collider {
@@ -252,3 +253,28 @@ export interface SelectSize {
   y: number
   z: number
 }
+
+export type typeString =
+"Natural Resource" |
+"Material" |
+"Component" |
+"End Product" |
+"Logistics" |
+"Dark Fog" |
+"Production Facility" |
+"Assembler" |
+"Power Transmission" |
+"Power Facility" |
+"Mining Facility" |
+"Fluid Pumping Facility" |
+"Smelting Facility" |
+"Oil Extraction Facility" |
+"Refining Facility" |
+"Chemical Facility" |
+"Fractionation Facility" |
+"Power Storage" |
+"Particle Collider" |
+"Research Facility" |
+"Turret" |
+"Defense Facility" |
+"Science Matrix"

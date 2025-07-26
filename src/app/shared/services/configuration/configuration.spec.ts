@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RecipeTreeGenerator } from './recipe-tree-generator';
+import { Configuration } from './configuration';
 
-describe('RecipeTreeGenerator', () => {
-  let service: RecipeTreeGenerator;
+describe('Configuration', () => {
+  let service: Configuration;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RecipeTreeGenerator);
+    service = TestBed.inject(Configuration);
   });
 
   it('should be created', () => {

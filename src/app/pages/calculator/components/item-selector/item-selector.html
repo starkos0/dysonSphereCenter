@@ -30,7 +30,7 @@
             <p-tabpanel value="0">
                 <div class="flex flex-wrap gap-2 items-center justify-center">
                     @if(mapDataService.items()) {
-                        @for (item of mapDataService.items() | keyvalue; track item.key) {
+                        @for (item of mapDataService.itemsWithoutBuildings() | keyvalue; track item.key) {
                             <p-button (onClick)="saveSelectedItem(item.value)" [pTooltip]="item.value.name" tooltipPosition="top" styleClass="shadow-md" severity="secondary">
                                 <img [src]="item.value.IconPath + '.png'" class="w-8 h-8" alt="">
                             </p-button>
