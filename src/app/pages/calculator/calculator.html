@@ -5,9 +5,9 @@
   ></app-side-bar>
   <div class="flex flex-col gap-4 w-full h-full">
     <app-nav-bar></app-nav-bar>
-    <div class="flex-1 flex flex-col md:flex-row gap-4 min-h-0">
+    <div class="flex-1 flex flex-col lg:flex-row gap-4 min-h-0">
       <div class="w-full h-full flex flex-col min-h-0 rounded-sm">
-        <div class="card flex-1 flex flex-col min-h-0 p-2 rounded-sm w-full overflow-x-auto">
+        <div class="card flex-1 flex flex-col min-h-0 p-2 rounded-sm w-full overflow-x-scroll">
           <div class="flex items-center gap-2 mb-2">
             <p-button 
               severity="secondary"
@@ -19,15 +19,13 @@
           </div>
           <p-treeTable
             [value]="recipeTreeGenerator.recipeTreeTreeNode()"
-            [scrollable]="true"
-            scrollHeight="flex"
             class="flex-1 min-h-0 p-treetable-sm"
             [showGridlines]="true"
             dataKey="key"
-            [tableStyle]="{'min-width': '50rem'}" 
-            [scrollable]="true"
-            [tableStyle]="{'min-width': '50rem'}"
-
+            [scrollable]="true" 
+            scrollHeight="flex" 
+            [scrollable]="true" 
+            [tableStyle]="{'min-width':'50rem'}"
           >
             <ng-template #header>
               <tr>
@@ -118,7 +116,7 @@
                                 <p-overlaybadge class="w-8 h-8" badgeSize="small" value="4" severity="info">
                                   <img
                                   [src]="iconPath + '.png'"
-                                  class="w-8 h-8"
+                                  class="w-8 h-8 shrink-0"
                                   />
                                 </p-overlaybadge>
                               }
@@ -131,7 +129,7 @@
                               ) {
                                 <img
                                   [src]="iconPath + '.png'"
-                                  class="w-8 h-8"
+                                  class="w-8 h-8 shrink-0"
                                 />
                               }
                             </div>
@@ -148,11 +146,11 @@
           </p-treeTable>
         </div>
       </div>
-      <div class="md:w-72 flex md:flex-col gap-4">
-        <div class="md:h-1/2 w-full card rounded-sm p-2">
+      <div class="lg:w-72 flex lg:flex-col gap-4">
+        <div class="lg:h-1/2 h-52 w-full card rounded-sm p-2">
           <app-total-items></app-total-items>
         </div>
-        <div class="md:h-1/2 w-full card rounded-sm p-2">
+        <div class="lg:h-1/2 w-full card rounded-sm p-2">
           <app-total-buildings></app-total-buildings>
         </div>
       </div>

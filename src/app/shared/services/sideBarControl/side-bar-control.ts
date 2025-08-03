@@ -10,13 +10,13 @@ export class SideBarControl {
 
   constructor() {
     this.checkIfMobile();
-    // window.addEventListener('resize', () => this.checkIfMobile());
+    window.addEventListener('resize', () => this.checkIfMobile());
   }
 
   private checkIfMobile() {
-    const mobile = window.innerWidth <= 1024;
+    const mobile = window.innerWidth <= 1120;
 
     this.hideSideBar.set(mobile);
-    // this.collapsedSideBar.set(mobile ? null : true);
+    this.collapsedSideBar.set(mobile ? null : true);
   }
 }
