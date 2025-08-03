@@ -24,23 +24,15 @@ export class App {
       if(!this.mapDataService.mainDataLoaded()) {
         //notify service
       }else {
-
+        this.configService.initConfig();
         console.log(this.mapDataService.items())
         console.log(this.mapDataService.techs())
         console.log("itemtypes: ", this.configService.itemTypes())
         console.log("itemTypeStrings: ", this.configService.itemTypeStrings())
+        console.log("recipesMadeFromString: ", this.mapDataService.recipesMadeFromString())
       }
     })
-    effect(() => {
-      
-      const stored = localStorage.getItem('configCalc');
-if (stored) {
-  this.userConfig.set(JSON.parse(stored));
-} else {
-  this.userConfig.set(defaultvaConfig());
-}
-
-    });
+    
     
   }
 }

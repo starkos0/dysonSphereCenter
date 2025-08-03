@@ -24,6 +24,25 @@ export class Configuration implements OnInit {
 
   constructor() {
     effect(() => {
+      const config = this.userConfig();
+      if (config && this.configInitialized) {
+        this.saveUserConfigFirstTime();
+      }
+    });
+  }
+
+  public userConfig = signal<ConfigCalc>({} as ConfigCalc);
+
+  ngOnInit(): void {
+    
+  }
+
+  initConfig() {
+    const storedConfig = localStorage.getItem('configCalc');
+    if (storedConfig) {
+      this.userConfig.set(JSON.parse(storedConfig));
+      this.configInitialized = true;
+    } else {
       const items = this.mapDataService.items();
       if (items.size === 0) return;
 
@@ -45,21 +64,9 @@ export class Configuration implements OnInit {
         belt: this.belts()[0],
         proliferator: this.proliferators()[0],
       });
-      console.log('Configuration initialized:', this.userConfig());
       this.configInitialized = true;
-    });
-
-    effect(() => {
-      const config = this.userConfig();
-      if (config && this.configInitialized) {
-        this.saveUserConfigFirstTime();
-      }
-    });
+    }
   }
-
-  public userConfig = signal<ConfigCalc>({} as ConfigCalc);
-
-  ngOnInit(): void {}
 
   public itemTypes: Signal<string[]> = computed(() => {
     const map = this.mapDataService.items();
@@ -166,14 +173,12 @@ export class Configuration implements OnInit {
     if (!item) return;
 
     const newItem = { ...item };
-    if(key === undefined) {
-
+    if (key === undefined) {
       this.userConfig.update((cfg) => ({
         ...cfg,
         [prop]: newItem,
       }));
-   
-    }else {
+    } else {
       this.userConfig.update((cfg) => ({
         ...cfg,
         [prop]: {
@@ -187,15 +192,12 @@ export class Configuration implements OnInit {
   public saveConfig() {
     const config = this.userConfig();
     console.log('Saving user configuration:', config);
-    localStorage.setItem(
-      "configCalc",
-      JSON.stringify(config),
-    );
+    localStorage.setItem('configCalc', JSON.stringify(config));
   }
 
   public saveUserConfigFirstTime() {
-    const configCalc = localStorage.getItem("configCalc");
-    if(!configCalc) {
+    const configCalc = localStorage.getItem('configCalc');
+    if (!configCalc) {
       this.saveConfig();
     }
   }

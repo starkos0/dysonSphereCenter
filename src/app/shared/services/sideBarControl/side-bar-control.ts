@@ -4,19 +4,19 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class SideBarControl {
-  public collapsedSideBar = signal<boolean | null>(true);
+  public collapsedSideBar = signal<boolean | null>(false);
   public hideSideBar = signal<boolean>(false);
   public visibleDrawer = signal(false);
 
   constructor() {
     this.checkIfMobile();
-    window.addEventListener('resize', () => this.checkIfMobile());
+    // window.addEventListener('resize', () => this.checkIfMobile());
   }
 
   private checkIfMobile() {
     const mobile = window.innerWidth <= 1024;
 
     this.hideSideBar.set(mobile);
-    this.collapsedSideBar.set(mobile ? null : true);
+    // this.collapsedSideBar.set(mobile ? null : true);
   }
 }

@@ -9,4 +9,5 @@ export interface DataTree {
     children?: DataTree[];
     parent?: DataTree;
     recipe?: Recipe;
+    
 }

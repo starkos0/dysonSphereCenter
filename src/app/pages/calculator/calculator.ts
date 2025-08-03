@@ -23,10 +23,10 @@ import { TreeTableBodyCtx } from '../../shared/models/TreeTableBodyCtx';
 import { RecipesWithIcons } from '../../shared/models/core/ItemWithRecipe';
 import { RippleModule } from 'primeng/ripple';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { Configuration } from '../../shared/services/configuration/configuration';
 
 @Component({
-  selector: 'app-calculator',
-  imports: [
+  selector: 'app-calculator', imports: [
     NavBar,
     SideBar,
     RouterOutlet,
@@ -52,6 +52,7 @@ export class Calculator implements OnInit{
   public sideBarService = inject(SideBarControl);
   public recipeTreeGenerator = inject(RecipeTreeGenerator);
   public mapData = inject(MapData);
+  public configService = inject(Configuration);
   typedTree = {} as TreeTableBodyCtx;
 
 
@@ -63,6 +64,7 @@ export class Calculator implements OnInit{
   }
 
   onQuantityChange(node: TreeNode<DataTree>, qty: number) {
+    
     console.log(node, qty)
   }
 
@@ -73,6 +75,38 @@ export class Calculator implements OnInit{
       return null;
     }
     return itemWithRecipes.allRecipes
+  }
+
+  getBuildingIcon(madeFromString: string | undefined): string {
+    if (!madeFromString) {
+      return '';
+    }
+
+    const madeFromStrings = this.mapData.recipesMadeFromString();
+
+    const index = madeFromStrings.indexOf(madeFromString);
+    if (index === -1) {
+      return '';
+    }
+    
+    switch (madeFromString) {
+      case "Assembler":
+        return this.configService.userConfig().buildings.assembler?.IconPath ?? '';
+      case "Smelting Facility":
+        return this.configService.userConfig().buildings.smelter?.IconPath ?? '';
+      case "Chemical Facility":
+        return this.configService.userConfig().buildings.chemicalPlant?.IconPath ?? '';
+      case "Refining Facility":
+        return this.configService.userConfig().buildings.oilRefinery?.IconPath ?? '';
+      case "Fractionation Facility":
+        return this.configService.userConfig().buildings.fractionator?.IconPath ?? '';
+      case "Research Facility":
+        return this.configService.userConfig().buildings.matrixLab?.IconPath ?? '';
+      case "Particle Collider":
+        return this.configService.userConfig().buildings.miniatureParticleCollider?.IconPath ?? '';
+      default:
+        return '';
+    }
   }
 
 }

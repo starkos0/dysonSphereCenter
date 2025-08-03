@@ -4,6 +4,7 @@ import {
   inject,
   Injectable,
   OutputEmitterRef,
+  Signal,
   signal,
 } from '@angular/core';
 import { Item } from '../../models/core/Item';
@@ -160,4 +161,19 @@ export class MapData {
 
     return map;
   })
+
+  public recipesMadeFromString: Signal<string[]> = computed(() => {
+    const map = this.recipes();
+    if (map.size === 0) return [];
+    const seen = new Set<string>();
+    const result: string[] = [];
+    for (const recipe of map.values()) {
+      const key = recipe.madeFromString;
+      if (!seen.has(key)) {
+        seen.add(key);
+        result.push(key);
+      }
+    }
+    return result;
+  });
 }
