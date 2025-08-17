@@ -24,7 +24,7 @@ import { RecipesWithIcons } from '../../shared/models/core/ItemWithRecipe';
 import { RippleModule } from 'primeng/ripple';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { Configuration } from '../../shared/services/configuration/configuration';
-
+import { SelectModule } from 'primeng/select';
 @Component({
   selector: 'app-calculator', imports: [
     NavBar,
@@ -43,7 +43,8 @@ import { Configuration } from '../../shared/services/configuration/configuration
     TableModule,
     TypedTemplateDirective,
     RippleModule,
-    OverlayBadgeModule
+    OverlayBadgeModule,
+    SelectModule,
   ],
   templateUrl: './calculator.html',
   styleUrl: './calculator.css',
@@ -54,7 +55,6 @@ export class Calculator implements OnInit{
   public mapData = inject(MapData);
   public configService = inject(Configuration);
   typedTree = {} as TreeTableBodyCtx;
-
 
   visible = false;
 
@@ -76,6 +76,7 @@ export class Calculator implements OnInit{
     }
     return itemWithRecipes.allRecipes
   }
+  
 
   getBuildingIcon(madeFromString: string | undefined): string {
     if (!madeFromString) {

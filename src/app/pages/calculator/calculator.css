@@ -1,0 +1,14 @@
+/* To remove the nesting effect */
+
+:host ::ng-deep .p-treetable-toggler {
+  margin-left: 0 !important; 
+}
+
+:host ::ng-deep .p-treetable .p-treetable-thead > tr > th:first-child,
+:host ::ng-deep .p-treetable .p-treetable-tbody > tr > td:first-child {
+  width: 3rem; 
+}
+
+:host ::ng-deep .auto-width-table .p-treetable-scrollable-body-table {
+  table-layout: auto !important;
+}

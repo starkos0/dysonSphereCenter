@@ -9,5 +9,8 @@ export interface DataTree {
     children?: DataTree[];
     parent?: DataTree;
     recipe?: Recipe;
-    
+    requiredBuildings: number;
+    proliferator: number; // 0 nothing
+    requiredBelts: number;
+    power: number;
 }

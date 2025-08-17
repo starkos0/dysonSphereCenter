@@ -3,6 +3,7 @@ import { MapData } from '../mapData/map-data';
 import { Item } from '../../models/core/Item';
 import { DataTree } from '../../models/core/DataTree';
 import { TreeNode } from 'primeng/api';
+import { Recipe } from '../../models/core/Recipe';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class RecipeTreeGenerator {
       }
 
       const recipeTreeTreeNode = this.recipeTreeTreeNode();
-      console.warn("recipetree node: ", recipeTreeTreeNode)
+      console.warn('recipetree node: ', recipeTreeTreeNode);
     });
   }
 
@@ -33,6 +34,62 @@ export class RecipeTreeGenerator {
     const dt = this.recipeTree();
     return dt ? [this.mapTreeToTreeNode(dt)] : [];
   });
+
+  public nodeMap = computed(() => {
+    const tree = this.recipeTree();
+    if (!tree) {
+      return new Map<string, DataTree>();
+    }
+    const map = new Map<string, DataTree>();
+    this.buildMap(tree, map);
+    return map;
+  });
+
+  private buildMap(node: DataTree, map: Map<string, DataTree>) {
+    map.set(node.key, node);
+    for (const child of node.children ?? []) {
+      this.buildMap(child, map);
+    }
+  }
+
+  onRecipeChange(rowNode: DataTree, newRecipeId: number) {
+    if (rowNode && newRecipeId) {
+      const recipes = this.mapDataService
+        .itemsWithRecipes()
+        .get(rowNode.itemId)?.allRecipes;
+      const selectedRecipe = recipes?.find((r) => r.ID === newRecipeId);
+
+      if (!selectedRecipe) {
+        console.error(
+          `Recipe with ID ${newRecipeId} not found for item ${rowNode.itemName}`,
+        );
+        return;
+      }
+
+      const tree = this.recipeTree();
+
+      if (!tree) {
+        console.error('Recipe tree is not initialized');
+        return;
+      }
+
+      // 1. Get the new children. We pass a temporary object to rebuildSubTree
+      //    so it can calculate the new children based on the new recipe.
+      const temporaryNodeWithNewRecipe = { ...rowNode, recipe: selectedRecipe };
+      const newChildren = this.rebuildSubTree(temporaryNodeWithNewRecipe);
+
+      // 2. Call the generic inmutable update function to create a new tree
+      //    with the updated recipe AND the new children.
+      const newTree = this.updateSpecificNode(tree, rowNode.key, {
+        recipe: selectedRecipe,
+        children: newChildren,
+      });
+
+      if (newTree) {
+        this.recipeTree.set(newTree);
+      }
+    }
+  }
 
   public checkRecipeAndQuantitySelection() {
     if (!this.selectedItem() || this.selectedQuantity() <= 0) {
@@ -60,6 +117,10 @@ export class RecipeTreeGenerator {
       quantity: this.selectedQuantity(),
       children: [],
       recipe: rootItem.selectedRecipe,
+      requiredBuildings: 0,
+      proliferator: 0,
+      requiredBelts: 0,
+      power: 0
     };
 
     const stack: DataTree[] = [rootNode];
@@ -88,6 +149,10 @@ export class RecipeTreeGenerator {
           children: [],
           parent: currentNode,
           recipe: childData.selectedRecipe,
+          requiredBuildings: 0,
+          proliferator: 0,
+          requiredBelts: 0,
+          power: 0
         };
 
         currentNode.children!.push(childNode);
@@ -105,11 +170,15 @@ export class RecipeTreeGenerator {
         recipe: root.recipe,
         iconPath: root.iconPath,
         key: root.key,
-        itemId: root.itemId
+        itemId: root.itemId,
+        requiredBuildings: 0,
+        proliferator: 0,
+        requiredBelts: 0,
+        power: 0
       },
       children: [],
       leaf: !root.children || root.children.length === 0,
-      expanded: true
+      expanded: true,
     };
 
     const stack: [DataTree, TreeNode][] = [[root, rootNode]];
@@ -124,11 +193,15 @@ export class RecipeTreeGenerator {
             recipe: child.recipe,
             iconPath: child.iconPath,
             key: child.key,
-            itemId: child.itemId
+            itemId: child.itemId,
+            requiredBuildings: 0,
+            proliferator: 0,
+            requiredBelts: 0,
+            power: 0
           },
           children: [],
           leaf: !child.children || child.children.length === 0,
-          expanded: true
+          expanded: true,
         };
         tn.children!.push(childTN);
         stack.push([child, childTN]);
@@ -136,5 +209,72 @@ export class RecipeTreeGenerator {
     }
 
     return rootNode;
+  }
+
+  private updateSpecificNode(
+    tree: DataTree | null,
+    key: string,
+    partialUpdate: Partial<DataTree>,
+  ): DataTree | null {
+    if (!tree) {
+      return null;
+    }
+
+    // Si encontramos el nodo, devolvemos una copia con las nuevas propiedades
+    if (tree.key === key) {
+      return { ...tree, ...partialUpdate };
+    }
+
+    // Recursivamente, si un hijo cambia, creamos una nueva copia de los hijos
+    const updatedChildren = tree.children?.map((child) =>
+      this.updateSpecificNode(child, key, partialUpdate),
+    );
+
+    // Si los hijos no han cambiado, devolvemos el mismo nodo
+    if (updatedChildren?.every((child, i) => child === tree.children![i])) {
+      return tree;
+    }
+
+    // Si al menos un hijo ha cambiado, devolvemos una copia del nodo con los nuevos hijos
+    return { ...tree, children: updatedChildren as DataTree[] };
+  }
+
+  // rebuild tree partially starting with a specific node
+  rebuildSubTree(parentNode: DataTree): DataTree[] {
+    const newChildren: DataTree[] = [];
+
+    if(!parentNode.recipe) {
+      console.warn(`No recipe found for item ${parentNode.itemName}`);
+      return newChildren;
+    }
+
+    for (let i = 0; i < parentNode.recipe.Items.length; i++) {
+      const childId = parentNode.recipe.Items[i];
+      const childCount = parentNode.recipe.ItemCounts[i];
+
+      const childData = this.mapDataService.itemsWithRecipes().get(childId);
+
+      if(!childData) continue;
+
+      const childNode: DataTree = {
+        key: `${childData.ID}-${childData.name}`,
+        itemName: childData.name,
+        itemId: childData.ID,
+        iconPath: childData.IconPath,
+        quantity: childCount * parentNode.quantity,
+        children: [],
+        recipe: childData.selectedRecipe,
+        requiredBuildings: 0,
+        proliferator: 0,
+        requiredBelts: 0,
+        power: 0
+      };
+
+      childNode.children = this.rebuildSubTree({...childNode});
+
+      newChildren.push(childNode);
+    }
+
+    return newChildren;
   }
 }

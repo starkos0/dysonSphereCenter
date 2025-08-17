@@ -29,6 +29,46 @@ export class MapData {
   public buildings = signal(new Map<number, Item>());
   public itemsWithoutBuildings = signal(new Map<number,Item>());
 
+  public itemsWithRecipes = computed(() => {
+    const items = this.items();
+    const recipes = this.recipes();
+    const map = new Map<number, ItemWithRecipes>();
+
+    for(const item of items.values()) {
+      const itemRecipes = (Array.from(recipes.values()).filter(recipe => 
+        item.recipes?.some(r => r.ID === recipe.ID)
+      ) || []).map(recipe => {
+        const inputIcons = recipe.Items.map((itemId) => {
+          const inputItem = items.get(itemId);
+          return inputItem?.IconPath ?? '';
+        });
+
+        const outputIcons = recipe.Results.map((itemId) => {
+          const outputItem = items.get(itemId);
+          return outputItem?.IconPath ?? '';
+        })
+
+        return {
+          ...recipe,
+          inputIcons,
+          outputIcons
+        }
+      });
+
+      const defaultRecipe = itemRecipes.length > 1 
+        ? itemRecipes.find(r => r.name.toLowerCase().includes('advanced'))
+        : itemRecipes[0];
+
+      map.set(item.ID, {
+        ...item,
+        allRecipes: itemRecipes,
+        selectedRecipe: defaultRecipe,
+      });
+    }
+
+    return map;
+  })
+
   constructor() {
     effect(() => {
       if (
@@ -122,46 +162,7 @@ export class MapData {
       });
   }
 
-  public itemsWithRecipes = computed(() => {
-    const items = this.items();
-    const recipes = this.recipes();
-    const map = new Map<number, ItemWithRecipes>();
-
-    for(const item of items.values()) {
-      const itemRecipes = (Array.from(recipes.values()).filter(recipe => 
-        item.recipes?.some(r => r.ID === recipe.ID)
-      ) || []).map(recipe => {
-        const inputIcons = recipe.Items.map((itemId) => {
-          const inputItem = items.get(itemId);
-          return inputItem?.IconPath ?? '';
-        });
-
-        const outputIcons = recipe.Results.map((itemId) => {
-          const outputItem = items.get(itemId);
-          return outputItem?.IconPath ?? '';
-        })
-
-        return {
-          ...recipe,
-          inputIcons,
-          outputIcons
-        }
-      });
-
-      const defaultRecipe = itemRecipes.length > 1 
-        ? itemRecipes.find(r => r.name.toLowerCase().includes('advanced'))
-        : itemRecipes[0];
-
-      map.set(item.ID, {
-        ...item,
-        allRecipes: itemRecipes,
-        selectedRecipe: defaultRecipe,
-      });
-    }
-
-    return map;
-  })
-
+  
   public recipesMadeFromString: Signal<string[]> = computed(() => {
     const map = this.recipes();
     if (map.size === 0) return [];
